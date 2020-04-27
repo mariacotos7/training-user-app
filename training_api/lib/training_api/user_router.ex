@@ -2,7 +2,6 @@ defmodule Training.User_Router do
     use Plug.Router
   
     import Training.Repository
-    import Training.Dog
     import Training.User
     #use Training.Auth
     require Logger

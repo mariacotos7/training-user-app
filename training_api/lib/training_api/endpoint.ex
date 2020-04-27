@@ -21,7 +21,6 @@ defmodule Training.Endpoint do
     |> send_resp(200, Poison.encode!(%{:token => token_with_default_claims}))
   end
 
-  forward("/dog", to: Training.Router)
   forward("/user", to: Training.User_Router)
 
   match _ do

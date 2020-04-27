@@ -1,21 +1,21 @@
-defmodule Doggos.Router do
+defmodule Training.Router do
   use Plug.Router
 
-  import Doggos.Repository
-  import Doggos.Dog
-  #use Doggos.Auth
+  import Training.Repository
+  import Training.Dog
+  #use Training.Auth
   require Logger
 
   plug(Plug.Logger, log: :debug)
 
   plug(:match)
-  plug Doggos.AuthPlug
+  plug Training.AuthPlug
   plug(:dispatch)
 
   get "/" do
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(200, Poison.encode!(Doggos.Repository.get_dogs()))
+    |> send_resp(200, Poison.encode!(Training.Repository.get_dogs()))
   end
 
 
@@ -35,13 +35,13 @@ defmodule Doggos.Router do
            |> put_status(400)
            |> assign(:jsonapi, %{"error" => "'age' field must be provided"})
          true ->
-           Doggos.Repository.add_dog(%Doggos.Dog{
+           Training.Repository.add_dog(%Training.Dog{
              name: name,
              age: age
            })
                conn
                |> put_resp_content_type("application/json")
-               |> send_resp(201, Poison.encode!(%{:data => %Doggos.Dog{
+               |> send_resp(201, Poison.encode!(%{:data => %Training.Dog{
                  name: name,
                  age: age
                }}))

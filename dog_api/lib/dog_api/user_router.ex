@@ -1,22 +1,22 @@
-defmodule Doggos.User_Router do
+defmodule Training.User_Router do
     use Plug.Router
   
-    import Doggos.Repository
-    import Doggos.Dog
-    import Doggos.User
-    #use Doggos.Auth
+    import Training.Repository
+    import Training.Dog
+    import Training.User
+    #use Training.Auth
     require Logger
   
     plug(Plug.Logger, log: :debug)
   
     plug(:match)
-    plug Doggos.AuthPlug
+    plug Training.AuthPlug
     plug(:dispatch)
   
     get "/" do
       conn
       |> put_resp_content_type("application/json")
-      |> send_resp(200, Poison.encode!(Doggos.Repository.get_users()))
+      |> send_resp(200, Poison.encode!(Training.Repository.get_users()))
     end
 
     get "/signin" do
@@ -26,7 +26,7 @@ defmodule Doggos.User_Router do
       }
       conn
       |> put_resp_content_type("application/json")
-      |> send_resp(200, Poison.encode!(Doggos.Repository.signin(username,password)))
+      |> send_resp(200, Poison.encode!(Training.Repository.signin(username,password)))
     end
 
     post "/" do
@@ -65,7 +65,7 @@ defmodule Doggos.User_Router do
                 |> put_status(400)
                 |> assign(:jsonapi, %{"error" => "'experience' field must be provided"})
              true ->
-               Doggos.Repository.signup_user(%Doggos.User{
+                Training.Repository.signup_user(%Training.User{
                 username: username,
                 password: password,
                 role: role,
@@ -75,7 +75,7 @@ defmodule Doggos.User_Router do
                })
                    conn
                    |> put_resp_content_type("application/json")
-                   |> send_resp(201, Poison.encode!(%{:data => %Doggos.User{
+                   |> send_resp(201, Poison.encode!(%{:data => %Training.User{
                     username: username,
                     password: password,
                     role: role,

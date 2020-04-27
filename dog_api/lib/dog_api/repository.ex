@@ -1,4 +1,4 @@
-defmodule Doggos.Repository do
+defmodule Training.Repository do
 
   def add_dog (dog) do
     :ets.insert(:my_dogs, {"dog", dog})

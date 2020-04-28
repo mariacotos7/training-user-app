@@ -1,9 +1,9 @@
-defmodule Doggos.MixProject do
+defmodule Training.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :doggos,
+      app: :training,
       version: "0.1.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
@@ -15,7 +15,7 @@ defmodule Doggos.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Doggos.Application, []}
+      mod: {Training.Application, []}
     ]
   end
 

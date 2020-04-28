@@ -1,4 +1,4 @@
-defmodule Doggos.AuthPlug do
+defmodule Training.AuthPlug do
   import Plug.Conn
 
   require Logger
@@ -14,7 +14,7 @@ defmodule Doggos.AuthPlug do
             |> String.split(" ")
             |> List.last()
 
-    case Doggos.Token.verify_and_validate(token) do
+    case Training.Token.verify_and_validate(token) do
       {:ok, _} -> conn
       {:error, _} -> conn |> forbidden
     end

@@ -1,4 +1,4 @@
-defmodule Doggos.Application do
+defmodule Training.Application do
   use Application
 
   def start(_type, _args) do
@@ -10,14 +10,14 @@ defmodule Doggos.Application do
     defp children do
      [
      {Plug.Adapters.Cowboy2, scheme: :http,
-     plug: Doggos.Endpoint, options: [port: 4000]}
+     plug: Training.Endpoint, options: [port: 4000]}
      ]
     end
 
   defp opts do
     [
       strategy: :one_for_one,
-      name: Doggos.Supervisor
+      name: Training.Supervisor
     ]
   end
 end

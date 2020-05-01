@@ -3,20 +3,33 @@ defmodule Training.AuthPlug do
 
   require Logger
 
+
   def init(opts), do: opts
 
   def call(conn, _opts) do
     #doar exemplu!
-    #https://devhints.io/phoenix-conn 
-    token = conn
-            |> get_req_header("authorization")
-            |> List.first()
-            |> String.split(" ")
-            |> List.last()
+    #https://devhints.io/phoenix-conn
+    cond do
+      conn.private |> Map.get(:jwt_skip, false) ->
+        # Skipping authentication
+        conn
+      true ->
+        {:ok, service} = Training.Auth.start_link
 
-    case Training.Token.verify_and_validate(token) do
-      {:ok, _} -> conn
-      {:error, _} -> conn |> forbidden
+        conn = conn |> assign(:auth_service, service)
+
+        jwt_compact = conn
+                |> get_req_header("authorization")
+                |> List.first()
+                |> String.split(" ")
+                |> List.last()
+
+        case Training.Auth.validate_token(service, jwt_compact) do
+          {:ok, _} -> conn
+          {:error, _} ->
+            Training.Auth.stop(service)
+            conn |> forbidden
+        end
     end
   end
 

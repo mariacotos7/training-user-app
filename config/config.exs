@@ -9,7 +9,7 @@ config :joken, default_signer: "secret2"
 config :training,
   redb_host: "localhost",
   redb_port: 28015,
-  redb_db: "training",
+  redb_db: "test",
   redb_tables: [
     "users"
   ],

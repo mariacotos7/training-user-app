@@ -3,6 +3,7 @@ defmodule Training.Endpoint do
   use Plug.Router
 
   alias Training.Auth
+  alias Training.Models.User
 
   plug(:match)
 
@@ -16,18 +17,15 @@ defmodule Training.Endpoint do
   plug Training.AuthPlug
   plug(:dispatch)
 
-  post "/login", private: @skip_token_verification do
-    {username, password, id} = {
-      Map.get(conn.params, "username", nil),
-      Map.get(conn.params, "password", nil),
-      Map.get(conn.params, "id", nil)
-    }
-    
-    flag = case username == "admin" and password == "admin"  do
-       true ->
-        {:ok, auth_service} = Training.Auth.start_link
-      
-        case  Training.Auth.issue_token(auth_service, %{:id => id}) do
+   post "/login", private: @skip_token_verification do
+       {username, password } = {
+         Map.get(conn.params, "username", nil),
+         Map.get(conn.params, "password", nil)
+       }
+       case User.find(%{username: username, password: password})  do
+           {:ok, [user|_]} ->
+           {:ok, auth_service} = Training.Auth.start_link
+           case  Training.Auth.issue_token(auth_service, user|> Map.drop([:password])) do
           token ->
             conn
             |> put_resp_content_type("application/json")

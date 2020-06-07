@@ -7,9 +7,9 @@ use Mix.Config
 config :joken, default_signer: "secret2"
 
 config :training,
-  redb_host: "localhost",
-  redb_port: 28015,
-  redb_db: "test",
+  redb_host: "dpg-br58f2pd2beie4pd1g2g",
+  redb_port: 5432,
+  redb_db: "test_gin4",
   redb_tables: [
     "users"
   ],
